@@ -1,0 +1,58 @@
+{% extends 'nav.html' %}
+
+{% block content %}
+
+<main class="container py-5">
+    <h1 class="display-4 text-center mb-5">Catálogo de Muebles</h1>
+
+    <!-- Pendiente los filtros -->
+    <div class="mb-4">
+        <h3>Filtros:</h3>
+        <div class="btn-group" role="group">
+            <a href="{% url 'catalogo_muebles' %}" class="btn btn-outline-dark">Todos</a>
+            {% for categoria in categorias %}
+            <a href="{% url 'catalogo_muebles' %}?categoria={{ categoria.id }}" class="btn btn-outline-dark">
+                {{ categoria.nombre }}
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="row">
+        {% for producto in productos %}
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+
+                {% if producto.imagen %}
+                <img src="{{ producto.imagen.url }}" class="card-img-top" alt="{{ producto.nombre }}">
+                {% else %}
+                <img src="https://via.placeholder.com/300" class="card-img-top" alt="Imagen no disponible">
+                {% endif %}
+
+                <!-- Detalles del producto -->
+                <div class="card-body">
+                    <h5 class="card-title">{{ producto.nombre }}</h5>
+                    <p class="card-text">
+                        <strong>Categoría:</strong> {{ producto.categoria.nombre }}<br>
+                        <strong>Material:</strong> {{ producto.material }}<br>
+                        <strong>Tipo:</strong> {{ producto.tipo }}<br>
+                        <strong>Precio:</strong> ₡{{ producto.precio }}<br>
+                        <strong>En stock:</strong> {{ producto.en_stock }} unidades
+                    </p>
+                </div>
+
+                <!-- Botón para ver detalles -->
+                <div class="card-footer">
+                    <a href="#" class="btn btn-primary w-100">Ver detalles</a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12">
+            <p class="text-center">No hay productos disponibles.</p>
+        </div>
+        {% endfor %}
+    </div>
+</main>
+
+{% endblock %}
